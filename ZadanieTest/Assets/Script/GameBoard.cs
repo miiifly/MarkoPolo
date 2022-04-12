@@ -24,7 +24,7 @@ public class GameBoard : MonoBehaviour
         {
             for (int j = 0; j < width; j++)
             {
-                Debug.Log(i);
+                
                 GameObject go = Instantiate(Tile, new Vector3((float)i, 0, (float)j), Quaternion.Euler(90f, 0, 0), transform); 
                 go.GetComponent<MeshRenderer>().material = whitefirst == true ? white : black;
                 whitefirst = whitefirst == true ? false : true;
@@ -38,7 +38,7 @@ public class GameBoard : MonoBehaviour
 
     public void ClearChildren()
     {
-        Debug.Log(transform.childCount);
+        //Debug.Log(transform.childCount);
         int i = 0;
 
         //Array to hold all child obj
@@ -57,7 +57,7 @@ public class GameBoard : MonoBehaviour
             DestroyImmediate(child.gameObject);
         }
 
-        Debug.Log(transform.childCount);
+       // Debug.Log(transform.childCount);
     }
 
   
