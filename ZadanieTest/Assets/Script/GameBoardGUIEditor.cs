@@ -7,7 +7,7 @@ using UnityEditor;
 public class GameBoardGUIEditor : Editor
 {
     GameBoard gameboard;
-
+    
     public override void OnInspectorGUI()
     {   
         base.OnInspectorGUI();

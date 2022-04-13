@@ -13,6 +13,7 @@ public class CameraRotateAround : MonoBehaviour {
 	public float zoomMin = 3; 
 	private float X, Y;
 
+	//Ustawienie początkowego polożenia kamery
 	void Start () 
 	{	
 		target = GameObject.FindWithTag("Center").transform;
@@ -23,6 +24,9 @@ public class CameraRotateAround : MonoBehaviour {
 		transform.position = target.position + offset;
 	}
 
+	//Sterowanie kamery:
+	// kułko od myszki (zoom) 
+	// Prawy przycisk i poruszanie myszką --- obraca kamęre dookoła centru (target)
 	void Update ()
 	{
 		if(Input.GetAxis("Mouse ScrollWheel") > 0) offset.z += zoom;

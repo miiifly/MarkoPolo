@@ -22,6 +22,7 @@ public class SpawnAgent : MonoBehaviour
     {   
         gameboard = board.GetComponent<GameBoard>();
         
+        
         spawnTime = GetRandomSec();
     }
 
@@ -31,6 +32,7 @@ public class SpawnAgent : MonoBehaviour
         {
             position = GetFreePosition();
 
+            //Pojawienie się Agentów z przypisanie Nazwy oraz przekazaniu rozmiarów planszy
             GameObject agent = Instantiate(Agent, position, Quaternion.identity, transform);
             agentControler = agent.GetComponent<AgentControler>();
             agentControler.BoardSettings(gameboard.length, gameboard.width);
@@ -46,6 +48,8 @@ public class SpawnAgent : MonoBehaviour
         }
     }
 
+
+    //Sekundy w zakresie (lowTime, hightTime) otrzymane pseudolosowo
     public float GetRandomSec()
     {
         sec = Random.Range(lowTime,hightTime);
@@ -53,6 +57,7 @@ public class SpawnAgent : MonoBehaviour
         return (float)sec;
     }
 
+    //Sprawdzenie miejsca gdzie ma się pojawić Agent na dostępność
     public Vector3 GetFreePosition()
     {    
         Vector3 pos = new Vector3 (0, 0.5f ,0);

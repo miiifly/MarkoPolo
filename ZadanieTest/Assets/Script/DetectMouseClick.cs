@@ -13,6 +13,7 @@ public class DetectMouseClick : MonoBehaviour
 
     ChangeText changeText;
     
+   
     void Start()
     {   
       changeText = gameObject.GetComponent<ChangeText>(); 
@@ -28,19 +29,25 @@ public class DetectMouseClick : MonoBehaviour
             if(Input.GetMouseButtonDown(0))
             {   
                  if(hit.transform.tag == "Agent")
-                { 
+                {   
+                    //Odznacza poprzedniego Agenta
                     if(_agentselect)
                     {   
                         agent.GetComponent<AgentControler>()._agentselect = false;
                         agent.GetComponent<Collider>().GetComponent<Renderer>().material.color = Color.red;
+                        //Jezeli agent był wybrany w moment ukończenia się zycia 
+                        //kolejny klik odznacza tego Agenta i usuwa go
                         if(agent.GetComponent<AgentControler>().health <= 0)
                         {   
                             
                             agent.SetActive(true);
-                            Destroy(agent);
+                            
                         }  
                     }
-                                  
+
+                    //Zaznacza Agenta
+                    //Zmienia Kolor
+                    //Wypisuje w UI nazwe oraz ilość życia              
                     agent = hit.transform.gameObject;
                     agent.GetComponent<AgentControler>()._agentselect = true;
                     changeText.ChangeName(agent.name);
@@ -52,7 +59,8 @@ public class DetectMouseClick : MonoBehaviour
                     
                 }
 
-                else if(agent)
+                //Odznaczenie Agentu poprzez klikniecie na plansze
+                else if(_agentselect)
                 {   
                     changeText.SetDefault();
                     agent.GetComponent<Collider>().GetComponent<Renderer>().material.color = Color.red;
@@ -61,7 +69,7 @@ public class DetectMouseClick : MonoBehaviour
                     if(agent.GetComponent<AgentControler>().health<=0)
                         {   
                             agent.SetActive(true);
-                            Destroy(agent);
+                            
                         } 
                 }
                 else
@@ -75,6 +83,7 @@ public class DetectMouseClick : MonoBehaviour
              
         }
 
+        //Wyświetlenie ilości zdrowia w czasie żeczywistym
         if(_agentselect)
         {
             changeText.ChangeHealth(agent.GetComponent<AgentControler>().health.ToString());

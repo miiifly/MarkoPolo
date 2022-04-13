@@ -18,7 +18,7 @@ public class AgentControler : MonoBehaviour {
 
 
  
-
+    //Otrzymanie rozmiarów planszy
     public void BoardSettings(int l , int w)
     {
         length = l;
@@ -29,13 +29,14 @@ public class AgentControler : MonoBehaviour {
  
     private void Update() 
     {
-
+        //Usuń agenta gdy zostanie odznaczony
         if(health <= 0 && _agentselect == false)
         {   
             gameObject.SetActive(true);
             Destroy(gameObject);
         }
 
+        //Gdy Agent jest zaznaczony ale staric już wszystkie zycia zostaje wyłączony do momentu odznaczenia
         if(health <= 0 && _active)
         {
             gameObject.SetActive(false);
@@ -43,10 +44,13 @@ public class AgentControler : MonoBehaviour {
             return;
         }
         
-        if (_isMoving || health <= 0) return;
+        //Gdy Agent jest w trakcie obrotu czekaj
+        if (_isMoving ) return;
 
         direction = Random.Range(1, 5);
         
+
+        //Psewdolosowa generacja kierunku ruchu
         switch(direction)
         {
             case 1:
@@ -68,11 +72,13 @@ public class AgentControler : MonoBehaviour {
        
     }
 
+
     void Assemble(Vector3 dir) 
     {
         var anchor = transform.position + (Vector3.down + dir) * 0.5f;
         var axis = Vector3.Cross(Vector3.up, dir);
-           
+        
+        //Sprawdzenie poruszania się w przedziale planszy
         if((transform.position + dir).x > length - 1 || (transform.position + dir).x <0 || (transform.position + dir).z > width - 1 || (transform.position + dir).z < 0)
         {   
              // Debug.Log("->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+(transform.position+dir));
@@ -97,6 +103,7 @@ public class AgentControler : MonoBehaviour {
         
         RaycastHit hit;
         
+        //Sprawdzenie czy obok Agentu niema innego objektu poprzez kastowanie promiena.
         if(Physics.Raycast(transform.position, Vector3.left, out hit, 1f))
         {
             if(hit.collider.tag == "Agent" && _damage)
@@ -137,6 +144,8 @@ public class AgentControler : MonoBehaviour {
                 _damage = false;                
             }
         }
+
+        //Sprawdzenie czy jest mozliwy wykonany ruch w danym kierunku
         if(Physics.Raycast(transform.position, dir, out hit, 1.5f))
         {   
 
@@ -153,7 +162,9 @@ public class AgentControler : MonoBehaviour {
         _damage = true;
         return true;
     }
- 
+    
+
+    //Ruch poprzez obrotu dookoła krawędzi
     private IEnumerator Roll(Vector3 anchor, Vector3 axis) 
     {
         _isMoving = true;
