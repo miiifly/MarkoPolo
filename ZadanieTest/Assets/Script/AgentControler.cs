@@ -2,51 +2,50 @@ using System.Collections;
 using UnityEngine;
  
 public class AgentControler : MonoBehaviour {
-    [SerializeField] private float _rollSpeed = 5;
+    [SerializeField] private float rollSpeed = 5;
     private bool _isMoving;
     private int direction;
     public int health = 3;
-    string nameA ;
-    GameObject tempObject;
+
+    
     
     private int length, width;
 
-    bool damage = true;
-    bool active = true;
+    bool _damage = true;
+    bool _active = true;
 
-    public bool agentselect = false;
+    public bool _agentselect = false;
 
 
-    void Start()
-    {
-        nameA = gameObject.name;
-    }
-  
+ 
 
     public void BoardSettings(int l , int w)
     {
         length = l;
         width = w;
     }
- 
-    private void Update() {
 
-        if(health<=0 && agentselect == false)
+
+ 
+    private void Update() 
+    {
+
+        if(health <= 0 && _agentselect == false)
         {   
             gameObject.SetActive(true);
             Destroy(gameObject);
         }
 
-         if(health<=0 && active)
-         {
+        if(health <= 0 && _active)
+        {
             gameObject.SetActive(false);
-            active = false;
+            _active = false;
             return;
         }
         
         if (_isMoving || health <= 0) return;
 
-        direction = Random.Range(1,5);
+        direction = Random.Range(1, 5);
         
         switch(direction)
         {
@@ -69,27 +68,26 @@ public class AgentControler : MonoBehaviour {
        
     }
 
-    void Assemble(Vector3 dir) {
-            var anchor = transform.position + (Vector3.down + dir) * 0.5f;
-            var axis = Vector3.Cross(Vector3.up, dir);
+    void Assemble(Vector3 dir) 
+    {
+        var anchor = transform.position + (Vector3.down + dir) * 0.5f;
+        var axis = Vector3.Cross(Vector3.up, dir);
            
-           
-            
-            if((transform.position+dir).x > length-1 || (transform.position+dir).x <0 || (transform.position+dir).z > width-1 || (transform.position+dir).z <0)
-            {   
-                // Debug.Log("->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+(transform.position+dir));
-                // Debug.Log("from >>>>>>>>>>>>>>>>>>>>>>>>>>>> " + transform.position);
-                return;
-            }
-             if(Valid(dir))
-             {
-                 StartCoroutine(Roll(anchor, axis));
-             }
+        if((transform.position + dir).x > length - 1 || (transform.position + dir).x <0 || (transform.position + dir).z > width - 1 || (transform.position + dir).z < 0)
+        {   
+             // Debug.Log("->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+(transform.position+dir));
+            // Debug.Log("from >>>>>>>>>>>>>>>>>>>>>>>>>>>> " + transform.position);
+            return;
+        }
+        if(Valid(dir))
+        {
+            StartCoroutine(Roll(anchor, axis));
+        }
                 
             
           
             
-        }
+    }
 
      
 
@@ -101,42 +99,42 @@ public class AgentControler : MonoBehaviour {
         
         if(Physics.Raycast(transform.position, Vector3.left, out hit, 1f))
         {
-            if(hit.collider.tag == "Agent" && damage)
+            if(hit.collider.tag == "Agent" && _damage)
             {   
                 health--;
                 hit.collider.gameObject.GetComponent<AgentControler>().health--;
                 //Debug.Log(gameObject.name +" : -1 health");
-                damage = false;                
+                _damage = false;                
             }
         }
         else if(Physics.Raycast(transform.position, Vector3.right, out hit, 1f))
         {
-            if(hit.collider.tag == "Agent" && damage)
+            if(hit.collider.tag == "Agent" && _damage)
             {   
                 health--;
                 hit.collider.gameObject.GetComponent<AgentControler>().health--;
                 //Debug.Log(gameObject.name +" : -1 health");
-                damage = false;                
+                _damage = false;                
             }
         }
         else if(Physics.Raycast(transform.position, Vector3.forward, out hit, 1f))
         {
-            if(hit.collider.tag == "Agent" && damage)
+            if(hit.collider.tag == "Agent" && _damage)
             {   
                 health--;
                 hit.collider.gameObject.GetComponent<AgentControler>().health--;
                 //Debug.Log(gameObject.name +" : -1 health");
-                damage = false;                
+                _damage = false;                
             }
         }
         else if(Physics.Raycast(transform.position, Vector3.back, out hit, 1f))
         {
-            if(hit.collider.tag == "Agent" && damage)
+            if(hit.collider.tag == "Agent" && _damage)
             {   
                 health--;
                 hit.collider.gameObject.GetComponent<AgentControler>().health--;
                 //Debug.Log(gameObject.name +" : -1 health");
-                damage = false;                
+                _damage = false;                
             }
         }
         if(Physics.Raycast(transform.position, dir, out hit, 1.5f))
@@ -152,14 +150,16 @@ public class AgentControler : MonoBehaviour {
 
             
         }
-        damage = true;
+        _damage = true;
         return true;
     }
  
-    private IEnumerator Roll(Vector3 anchor, Vector3 axis) {
+    private IEnumerator Roll(Vector3 anchor, Vector3 axis) 
+    {
         _isMoving = true;
-        for (var i = 0; i < 90 / _rollSpeed; i++) {
-            transform.RotateAround(anchor, axis, _rollSpeed);
+        for (var i = 0; i < 90 / rollSpeed; i++) 
+        {
+            transform.RotateAround(anchor, axis, rollSpeed);
             yield return new WaitForSeconds(0.01f);
         }
         yield return new WaitForSeconds(1f);

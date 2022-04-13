@@ -8,19 +8,16 @@ public class SpawnAgent : MonoBehaviour
     public GameObject Agent;
     private AgentControler agentControler;
     public int numAgent;
+    public int lowTime = 2 , hightTime = 10;
     
     public GameObject board;
     private GameBoard gameboard;
 
-    int numA = 1;
-    
-   
-
-    string nameAgent;
+    int numName = 1;
     int sec;
     float spawnTime;
-    Vector3 position ;
-    int x;
+    Vector3 position;
+    
     void Start()
     {   
         gameboard = board.GetComponent<GameBoard>();
@@ -28,43 +25,43 @@ public class SpawnAgent : MonoBehaviour
         spawnTime = GetRandomSec();
     }
 
-   void Update()
-   {
+    void Update()
+    {
        if (spawnTime <= 0 && numAgent > 0) 
-       {
+        {
             position = GetFreePosition();
-            
 
-            GameObject agent = Instantiate(Agent, position, Quaternion.identity);
+            GameObject agent = Instantiate(Agent, position, Quaternion.identity, transform);
             agentControler = agent.GetComponent<AgentControler>();
             agentControler.BoardSettings(gameboard.length, gameboard.width);
-            agent.name = "Agent" + numA;
-            numA++;
+            agent.name = "Agent" + numName;
+
+            numName++;
             spawnTime = GetRandomSec();
             numAgent--;
-       }
-       else
-       {
+        }
+        else
+        {
            spawnTime -= Time.deltaTime;
-       }
-   }
+        }
+    }
 
-   public float GetRandomSec()
-   {
-        sec = Random.Range(2,10);
+    public float GetRandomSec()
+    {
+        sec = Random.Range(lowTime,hightTime);
         //Debug.Log(sec);
         return (float)sec;
-   }
+    }
 
-   public Vector3 GetFreePosition()
-   {    
-        Vector3 pos = new Vector3 (0,0.5f,0);
+    public Vector3 GetFreePosition()
+    {    
+        Vector3 pos = new Vector3 (0, 0.5f ,0);
         
         pos.x = Random.Range(0, gameboard.length);
         
         pos.z = Random.Range(0, gameboard.width);
 
-        if(!Physics.CheckBox(pos, new Vector3(0.5f,0.2f,0.5f)))
+        if(!Physics.CheckBox(pos, new Vector3(0.5f, 0.2f, 0.5f)))
         {   
            // Debug.Log("ThisWasFree -------------->" + pos);
             return pos;
@@ -74,18 +71,6 @@ public class SpawnAgent : MonoBehaviour
             //Debug.Log("ThisPlaceisTaken -------------->" + pos);
             return GetFreePosition();
         }
-   }
+    }
   
-
-    // IEnumerator Spawn(string nameAgent, float sec , int l , int w) 
-    // {   
-         
-    //     position.x = Random.Range(0,l);
-    //     position.z = Random.Range(0, w);
-       
-      
-    //     yield return new WaitForSeconds(sec);
-    //      Instantiate(Agent, position, Quaternion.identity);
-         
-    // }
 }

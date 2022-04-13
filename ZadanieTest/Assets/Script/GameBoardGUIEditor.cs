@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 
 [CustomEditor(typeof(GameBoard))]
-public class SimulationEditor : Editor
+public class GameBoardGUIEditor : Editor
 {
     GameBoard gameboard;
 
@@ -18,7 +18,6 @@ public class SimulationEditor : Editor
             gameboard.GenerateBoard();
         }
         
-
     }
 
     private void OnEnable()
