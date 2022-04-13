@@ -38,7 +38,7 @@ public class SpawnAgent : MonoBehaviour
             GameObject agent = Instantiate(Agent, position, Quaternion.identity);
             agentControler = agent.GetComponent<AgentControler>();
             agentControler.BoardSettings(gameboard.length, gameboard.width);
-            agent.name = "Agent:" + numA;
+            agent.name = "Agent" + numA;
             numA++;
             spawnTime = GetRandomSec();
             numAgent--;

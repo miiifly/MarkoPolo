@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Agent
+  - Center
   layers:
   - Default
   - TransparentFX

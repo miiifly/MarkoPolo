@@ -6,15 +6,21 @@ public class AgentControler : MonoBehaviour {
     private bool _isMoving;
     private int direction;
     public int health = 3;
+    string nameA ;
+    GameObject tempObject;
     
     private int length, width;
 
     bool damage = true;
+    bool active = true;
 
     public bool agentselect = false;
 
 
-
+    void Start()
+    {
+        nameA = gameObject.name;
+    }
   
 
     public void BoardSettings(int l , int w)
@@ -24,7 +30,21 @@ public class AgentControler : MonoBehaviour {
     }
  
     private void Update() {
-        if (_isMoving || health<=0) return;
+
+        if(health<=0 && agentselect == false)
+        {   
+            gameObject.SetActive(true);
+            Destroy(gameObject);
+        }
+
+         if(health<=0 && active)
+         {
+            gameObject.SetActive(false);
+            active = false;
+            return;
+        }
+        
+        if (_isMoving || health <= 0) return;
 
         direction = Random.Range(1,5);
         
@@ -46,16 +66,7 @@ public class AgentControler : MonoBehaviour {
             Assemble(Vector3.back);
             break;
         }
-        if(health<=0){
-            gameObject.SetActive(false);
-        }
-
-        if(health<=0 && !agentselect)
-        {   
-            
-            Destroy(gameObject);
-        }
-        
+       
     }
 
     void Assemble(Vector3 dir) {
@@ -87,12 +98,43 @@ public class AgentControler : MonoBehaviour {
     {
         
         RaycastHit hit;
-
-        if(Physics.Raycast(transform.position, Vector3.left, out hit, 1f) || Physics.Raycast(transform.position, Vector3.right, out hit, 1f) || Physics.Raycast(transform.position, Vector3.forward, out hit, 1f) || Physics.Raycast(transform.position, Vector3.back, out hit, 1f))
+        
+        if(Physics.Raycast(transform.position, Vector3.left, out hit, 1f))
         {
             if(hit.collider.tag == "Agent" && damage)
             {   
                 health--;
+                hit.collider.gameObject.GetComponent<AgentControler>().health--;
+                //Debug.Log(gameObject.name +" : -1 health");
+                damage = false;                
+            }
+        }
+        else if(Physics.Raycast(transform.position, Vector3.right, out hit, 1f))
+        {
+            if(hit.collider.tag == "Agent" && damage)
+            {   
+                health--;
+                hit.collider.gameObject.GetComponent<AgentControler>().health--;
+                //Debug.Log(gameObject.name +" : -1 health");
+                damage = false;                
+            }
+        }
+        else if(Physics.Raycast(transform.position, Vector3.forward, out hit, 1f))
+        {
+            if(hit.collider.tag == "Agent" && damage)
+            {   
+                health--;
+                hit.collider.gameObject.GetComponent<AgentControler>().health--;
+                //Debug.Log(gameObject.name +" : -1 health");
+                damage = false;                
+            }
+        }
+        else if(Physics.Raycast(transform.position, Vector3.back, out hit, 1f))
+        {
+            if(hit.collider.tag == "Agent" && damage)
+            {   
+                health--;
+                hit.collider.gameObject.GetComponent<AgentControler>().health--;
                 //Debug.Log(gameObject.name +" : -1 health");
                 damage = false;                
             }
