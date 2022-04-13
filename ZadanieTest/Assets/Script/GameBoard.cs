@@ -10,6 +10,7 @@ public class GameBoard : MonoBehaviour
 
 
     public GameObject Tile;
+    public GameObject CameraCenter;
     public Material white;
     public Material black;
     Color col = Color.white;
@@ -32,6 +33,7 @@ public class GameBoard : MonoBehaviour
 
             whitefirst = width % 2 == 0 ? !whitefirst : whitefirst;
         }
+        Instantiate(CameraCenter,new Vector3(((float)length-1)/2, 0, ((float)width-1)/2), Quaternion.identity, transform);
     }
 
 

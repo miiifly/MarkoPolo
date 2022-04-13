@@ -11,6 +11,8 @@ public class SpawnAgent : MonoBehaviour
     
     public GameObject board;
     private GameBoard gameboard;
+
+    int numA = 1;
     
    
 
@@ -36,6 +38,8 @@ public class SpawnAgent : MonoBehaviour
             GameObject agent = Instantiate(Agent, position, Quaternion.identity);
             agentControler = agent.GetComponent<AgentControler>();
             agentControler.BoardSettings(gameboard.length, gameboard.width);
+            agent.name = "Agent:" + numA;
+            numA++;
             spawnTime = GetRandomSec();
             numAgent--;
        }
@@ -48,7 +52,7 @@ public class SpawnAgent : MonoBehaviour
    public float GetRandomSec()
    {
         sec = Random.Range(2,10);
-        Debug.Log(sec);
+        //Debug.Log(sec);
         return (float)sec;
    }
 
@@ -62,12 +66,12 @@ public class SpawnAgent : MonoBehaviour
 
         if(!Physics.CheckBox(pos, new Vector3(0.5f,0.2f,0.5f)))
         {   
-            Debug.Log("ThisWasFree -------------->" + pos);
+           // Debug.Log("ThisWasFree -------------->" + pos);
             return pos;
         }
         else
         {   
-            Debug.Log("ThisPlaceisTaken -------------->" + pos);
+            //Debug.Log("ThisPlaceisTaken -------------->" + pos);
             return GetFreePosition();
         }
    }

@@ -6,10 +6,14 @@ public class AgentControler : MonoBehaviour {
     private bool _isMoving;
     private int direction;
     public int health = 3;
+    
+    private int length, width;
 
- 
+    bool damage = true;
 
-    int length, width;
+    public bool agentselect = false;
+
+
 
   
 
@@ -20,7 +24,7 @@ public class AgentControler : MonoBehaviour {
     }
  
     private void Update() {
-        if (_isMoving) return;
+        if (_isMoving || health<=0) return;
 
         direction = Random.Range(1,5);
         
@@ -42,9 +46,19 @@ public class AgentControler : MonoBehaviour {
             Assemble(Vector3.back);
             break;
         }
-    
- 
-        void Assemble(Vector3 dir) {
+        if(health<=0){
+            gameObject.SetActive(false);
+        }
+
+        if(health<=0 && !agentselect)
+        {   
+            
+            Destroy(gameObject);
+        }
+        
+    }
+
+    void Assemble(Vector3 dir) {
             var anchor = transform.position + (Vector3.down + dir) * 0.5f;
             var axis = Vector3.Cross(Vector3.up, dir);
            
@@ -52,17 +66,53 @@ public class AgentControler : MonoBehaviour {
             
             if((transform.position+dir).x > length-1 || (transform.position+dir).x <0 || (transform.position+dir).z > width-1 || (transform.position+dir).z <0)
             {   
-                Debug.Log("->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+(transform.position+dir));
-                Debug.Log("HUJ   from >>>>>>>>>>>>>>>>>>>>>>>>>>>> " + transform.position);
+                // Debug.Log("->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+(transform.position+dir));
+                // Debug.Log("from >>>>>>>>>>>>>>>>>>>>>>>>>>>> " + transform.position);
                 return;
             }
-            StartCoroutine(Roll(anchor, axis));
+             if(Valid(dir))
+             {
+                 StartCoroutine(Roll(anchor, axis));
+             }
+                
+            
+          
+            
         }
+
+     
+
+
+    bool Valid(Vector3 dir)
+    {
+        
+        RaycastHit hit;
+
+        if(Physics.Raycast(transform.position, Vector3.left, out hit, 1f) || Physics.Raycast(transform.position, Vector3.right, out hit, 1f) || Physics.Raycast(transform.position, Vector3.forward, out hit, 1f) || Physics.Raycast(transform.position, Vector3.back, out hit, 1f))
+        {
+            if(hit.collider.tag == "Agent" && damage)
+            {   
+                health--;
+                //Debug.Log(gameObject.name +" : -1 health");
+                damage = false;                
+            }
+        }
+        if(Physics.Raycast(transform.position, dir, out hit, 1.5f))
+        {   
+
+            //Debug.DrawRay(transform.position, dir, Color.green);
+            if(hit.collider.tag == "Agent")
+            {   
+
+                return false;
+                
+            }
+
+            
+        }
+        damage = true;
+        return true;
     }
-
-
-    void MoveControl(Vector3 dir)
-    {}
  
     private IEnumerator Roll(Vector3 anchor, Vector3 axis) {
         _isMoving = true;
