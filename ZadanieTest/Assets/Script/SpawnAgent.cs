@@ -6,16 +6,18 @@ using UnityEngine;
 public class SpawnAgent : MonoBehaviour
 {
     public GameObject Agent;
+    private AgentControler agentControler;
     public int numAgent;
     
     public GameObject board;
     private GameBoard gameboard;
+    
    
 
     string nameAgent;
     int sec;
     float spawnTime;
-    Vector3 position = new Vector3 (0,0.5f,0) ;
+    Vector3 position ;
     int x;
     void Start()
     {   
@@ -31,7 +33,9 @@ public class SpawnAgent : MonoBehaviour
             position = GetFreePosition();
             
 
-            Instantiate(Agent, position, Quaternion.identity);
+            GameObject agent = Instantiate(Agent, position, Quaternion.identity);
+            agentControler = agent.GetComponent<AgentControler>();
+            agentControler.BoardSettings(gameboard.length, gameboard.width);
             spawnTime = GetRandomSec();
             numAgent--;
        }
@@ -56,7 +60,7 @@ public class SpawnAgent : MonoBehaviour
         
         pos.z = Random.Range(0, gameboard.width);
 
-        if(!Physics.CheckBox(pos, new Vector3(0.4f,0.2f,0.4f)))
+        if(!Physics.CheckBox(pos, new Vector3(0.5f,0.2f,0.5f)))
         {   
             Debug.Log("ThisWasFree -------------->" + pos);
             return pos;
