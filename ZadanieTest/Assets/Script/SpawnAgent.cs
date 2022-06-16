@@ -7,7 +7,6 @@ public class SpawnAgent : MonoBehaviour
 {
     public GameObject Agent;
     private AgentControler agentControler;
-    [Range(1,30)]
     public int numAgent;
     public int lowTime = 2 , hightTime = 10;
     
